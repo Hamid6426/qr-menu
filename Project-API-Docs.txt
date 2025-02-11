@@ -1,0 +1,223 @@
+# QUICK SERVE API Documentation
+
+## Base URL
+
+http://localhost:5000/api
+
+## Authentication
+
+Endpoints for user login and role-based access.
+
+### 1. Login
+
+#### POST /auth/login
+
+Authenticate a user with email and password.
+
+Request:
+{
+  "email": "admin@example.com",
+  "password": "admin123"
+}
+
+Response:
+200 OK
+
+{
+  "token": "jwt-token",
+  "user": {
+    "id": "64fdd1234a",
+    "role": "Admin",
+    "name": "John Doe"
+  }
+}
+
+401 Unauthorized
+
+{
+  "message": "Invalid credentials"
+}
+
+Admin Endpoints
+Endpoints to manage users, recipes, and system settings.
+
+2. Get Dashboard Analytics
+GET /admin/dashboard
+Retrieve system-wide analytics (e.g., total orders, sales).
+
+Response:
+200 OK
+json
+ 
+{
+  "totalOrders": 120,
+  "totalSales": 2500,
+  "activeUsers": 5
+}
+3. Manage Users
+POST /admin/users
+Create a new user (Cook, Waiter, etc.).
+
+Request:
+json
+ 
+{
+  "name": "Jane Cook",
+  "email": "jane@example.com",
+  "password": "cook123",
+  "role": "Cook"
+}
+Response:
+201 Created
+json
+ 
+{
+  "message": "User created successfully",
+  "user": {
+    "id": "64fdd5678a",
+    "name": "Jane Cook",
+    "role": "Cook"
+  }
+}
+4. Manage Menu Items
+POST /admin/menu
+Add a new dish or beverage to the menu.
+
+Request:
+json
+
+{
+  "name": "Pasta Alfredo",
+  "description": "Creamy pasta with cheese and chicken",
+  "price": 15.5,
+  "category": "Main Course"
+}
+Response:
+201 Created
+json
+ 
+{
+  "message": "Dish added successfully",
+  "dish": {
+    "id": "64fdd9998z",
+    "name": "Pasta Alfredo",
+    "price": 15.5
+  }
+}
+Cook Endpoints
+Endpoints for managing recipes and viewing dishes.
+
+5. Manage Recipes
+POST /cook/recipes
+Add a new recipe.
+
+Request:
+json
+ 
+{
+  "name": "Pasta Sauce",
+  "ingredients": [
+    "Tomatoes",
+    "Cheese",
+    "Olive Oil"
+  ],
+  "instructions": "Blend tomatoes, simmer with cheese and oil for 20 mins."
+}
+Response:
+201 Created
+json
+ 
+{
+  "message": "Recipe added successfully",
+  "recipe": {
+    "id": "64fff123c",
+    "name": "Pasta Sauce"
+  }
+}
+Waiter Endpoints
+Endpoints to manage customer orders.
+
+6. Get Orders
+GET /waiter/orders
+Retrieve all orders currently in progress.
+
+Response:
+200 OK
+json
+ 
+[
+  {
+    "orderId": "101",
+    "table": 5,
+    "items": ["Burger", "Fries"],
+    "status": "In Progress"
+  },
+  {
+    "orderId": "102",
+    "table": 2,
+    "items": ["Pizza"],
+    "status": "Completed"
+  }
+]
+7. Update Order Status
+PUT /waiter/orders/:id
+Update the status of a specific order.
+
+Request:
+json
+ 
+{
+  "status": "Completed"
+}
+Response:
+200 OK
+json
+ 
+{
+  "message": "Order status updated successfully",
+  "order": {
+    "id": "101",
+    "status": "Completed"
+  }
+}
+Customer Endpoints
+Public endpoints for browsing menu items.
+
+8. Browse Menu
+GET /menu
+Retrieve all dishes and beverages available.
+
+Response:
+200 OK
+json
+ 
+[
+  {
+    "id": "64fdd9998z",
+    "name": "Pasta Alfredo",
+    "description": "Creamy pasta with cheese and chicken",
+    "price": 15.5,
+    "category": "Main Course"
+  },
+  {
+    "id": "64fdd8888z",
+    "name": "Coca-Cola",
+    "price": 2.5,
+    "category": "Beverage"
+  }
+]
+Error Responses
+All endpoints return the following standard error structure for failures:
+
+Error Format:
+json
+ 
+{
+  "status": "error",
+  "message": "Description of the error"
+}
+Status Code	Meaning
+400	Bad Request
+401	Unauthorized
+404	Resource Not Found
+500	Internal Server Error

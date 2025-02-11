@@ -5,6 +5,9 @@ import db from "./config/db.js";
 import { authRouter } from "./routes/authRoutes.js";
 import { userRouter } from "./routes/userRoutes.js";
 import { storeRouter } from "./routes/storeRoutes.js";
+import { workerRouter } from "./routes/workerRoutes.js";
+import { menuRouter } from "./routes/menuRoutes.js";
+import { orderRouter } from "./routes/orderRoutes.js";
 
 // Load environment variables
 dotenv.config();
@@ -34,5 +37,8 @@ app.get("/api", (_req, res) => {
 app.use("/api/auth", authRouter); // Auth routes
 app.use("/api/users", userRouter); // User routes
 app.use("/api/stores", storeRouter); // User routes
+app.use("/api/workers", workerRouter); // User routes
+app.use("/api/menus", menuRouter); // User routes
+app.use("/api/orders", orderRouter); // User routes
 
 export default app;

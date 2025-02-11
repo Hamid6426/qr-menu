@@ -38,7 +38,7 @@ app.use("/api/auth", authRouter); // Auth routes
 app.use("/api/users", userRouter); // User routes
 app.use("/api/stores", storeRouter); // User routes
 app.use("/api/workers", workerRouter); // User routes
-app.use("/api/menus", menuRouter); // User routes
+app.use("/api/menu", menuRouter); // User routes
 app.use("/api/orders", orderRouter); // User routes
 
 export default app;

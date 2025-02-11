@@ -39,7 +39,7 @@ export const workerLoginController = async (req, res) => {
 // Get Worker by ID
 export const getWorkerByIdController = async (req, res) => {
   try {
-    const worker = await getWorkerById(req.params.id);
+    const worker = await getWorkerById(req.params._id);
     if (!worker) return res.status(404).json({ error: "Worker not found." });
     res.status(200).json(worker);
   } catch (error) {
@@ -61,7 +61,7 @@ export const getAllWorkersController = async (req, res) => {
 export const deleteWorkerByIdController = async (req, res) => {
   try {
     const adminId = req.user._id; // Assuming admin ID comes from auth middleware
-    const response = await deleteWorker(adminId, req.params.id);
+    const response = await deleteWorker(adminId, req.params._id);
     res.status(200).json(response);
   } catch (error) {
     res.status(400).json({ error: error.message });

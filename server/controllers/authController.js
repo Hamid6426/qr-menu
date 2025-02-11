@@ -91,7 +91,7 @@ export const resendCode = async (req, res) => {
     console.error("Error resending verification code:", error);
     res.status(500).json({ message: "Server error" });
   }
-};  
+};
 
 export const login = async (req, res) => {
   try {

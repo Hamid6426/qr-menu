@@ -24,16 +24,36 @@ const Register = () => {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     setIsSubmitting(true);
     setMessage("");
-
+  
     try {
       await axiosInstance.post("/auth/register", formData);
       navigate("/auth/verify-email"); // Navigate without reloading
     } catch (error) {
       console.error("Error registering user:", error);
-      setMessage("Registration failed. Please try again.");
+  
+      if (error.response) {
+        // Backend returned an error response
+        const { status, data } = error.response;
+  
+        if (status === 400) {
+          setMessage(data.message || "Invalid input. Please check your details.");
+        } else if (status === 409) {
+          setMessage("Email already exists. Try logging in.");
+        } else if (status === 500) {
+          setMessage("Server error. Please try again later.");
+        } else {
+          setMessage("Something went wrong. Please try again.");
+        }
+      } else if (error.request) {
+        // No response from server
+        setMessage("No response from server. Check your internet connection.");
+      } else {
+        // Other errors
+        setMessage("Unexpected error occurred. Please try again.");
+      }
     } finally {
       setIsSubmitting(false);
     }

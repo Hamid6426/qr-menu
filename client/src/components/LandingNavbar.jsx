@@ -31,7 +31,7 @@ export default function LandingNavbar() {
           </Link>
         ))}
       </div>
-      <a href='/auth/signup' className='py-2 px-4 bg-transparent border-2 border-white text-white font-black hover:text-[#f55] hover:bg-white'>Register Your Store</a>
+      <a href='/auth/register' className='py-2 px-4 bg-transparent border-2 border-white text-white font-black hover:text-[#f55] hover:bg-white'>Register Your Store</a>
     </div>
     </div>
     </>

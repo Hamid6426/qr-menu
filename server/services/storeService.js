@@ -1,77 +1,83 @@
+import sharp from "sharp";
 import Store from "../models/Store.js";
 
-// Create a new store
-export const createStoreService = async (storeData) => {
-  try {
-    const store = new Store(storeData);
-    await store.save();
-    return store;
-  } catch (error) {
-    throw new Error("Error creating store: " + error.message);
+export const createStoreService = async (storeData, file) => {
+  const storeCount = await Store.countDocuments({ adminId: storeData.adminId });
+  if (storeCount >= 3) {
+    throw new Error("Limit reached: An admin can only create up to 3 stores.");
   }
+
+  let storeThumbnail = null;
+  if (file) {
+    storeThumbnail = await sharp(file.buffer)
+      .resize(300, 300) // Resize to 300x300 pixels
+      .jpeg({ quality: 80 }) // Convert to JPEG with 80% quality
+      .toBuffer();
+  }
+
+  const store = new Store({
+    storeThumbnail: storeThumbnail,
+    storeName: storeData.storeName,
+    description: storeData.description,
+    address: storeData.address,
+    storePhone: storeData.storePhone,
+    storeEmail: storeData.storeEmail,
+    storeWebsite: storeData.storeWebsite,
+    adminId: storeData.adminId,
+  });
+
+  await store.save();
+  return store;
 };
 
-// Retrieve all stores
 export const getAllStoresService = async () => {
-  try {
-    const stores = await Store.find();
-    return stores;
-  } catch (error) {
-    throw new Error("Error retrieving stores: " + error.message);
-  }
+  return await Store.find().lean();
 };
 
-// Retrieve a store by ID
-export const getStoreByIdService = async (id) => {
-  try {
-    const store = await Store.findById(id);
-    if (!store) {
-      throw new Error("Store not found");
-    }
-    return store;
-  } catch (error) {
-    throw new Error("Error retrieving store: " + error.message);
+
+export const getStoreByIdService = async (_id) => {
+  const store = await Store.findById(_id);
+  if (!store) {
+    throw new Error("Store not found");
   }
+  return store;
 };
 
-// Update a store
-export const updateStoreService = async (id, storeData) => {
-  try {
-    const store = await Store.findByIdAndUpdate(id, storeData, { new: true });
-    if (!store) {
-      throw new Error("Store not found");
-    }
-    return store;
-  } catch (error) {
-    throw new Error("Error updating store: " + error.message);
+export const updateStoreService = async (_id, storeData, file) => {
+  const store = await Store.findById(_id);
+  if (!store) {
+    throw new Error("Store not found");
   }
+
+  let storeThumbnail = store.storeThumbnail;
+  if (file) {
+    storeThumbnail = await sharp(file.buffer)
+      .resize(300, 300)
+      .jpeg({ quality: 80 })
+      .toBuffer();
+  }
+
+  store.storeName = storeData.storeName || store.storeName;
+  store.description = storeData.description || store.description;
+  store.address = storeData.address || store.address;
+  store.storePhone = storeData.storePhone || store.storePhone;
+  store.storeEmail = storeData.storeEmail || store.storeEmail;
+  store.storeWebsite = storeData.storeWebsite || store.storeWebsite;
+  store.storeThumbnail = storeThumbnail;
+
+  await store.save();
+  return store;
 };
 
-// Delete a store
-export const deleteStoreService = async (id) => {
-  try {
-    const store = await Store.findByIdAndDelete(id);
-    if (!store) {
-      throw new Error("Store not found");
-    }
-    return store;
-  } catch (error) {
-    throw new Error("Error deleting store: " + error.message);
-  }
-};
+export const deleteStoreService = async (_id) => {
+  console.log("Deleting store with ID:", _id); // Debugging log
 
-export const patchUserService = async (_id, userData) => {
-  try {
-    const patchedUser = await User.findByIdAndUpdate(
-      _id,
-      { $set: userData },
-      { new: true }
-    );
-    if (!patchedUser) {
-      throw new Error("User not found");
-    }
-    return patchedUser;
-  } catch (error) {
-    throw new Error("Error patching user: " + error.message);
+  const store = await Store.findByIdAndDelete(_id);
+  if (!store) {
+    console.log("Store not found in database.");
+    throw new Error("Store not found or already deleted");
   }
+
+  console.log("Store deleted successfully:", store);
+  return store;
 };

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axiosInstance from "../../utils/axiosConfig";
+import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { Link } from "react-router-dom";
 
@@ -29,7 +29,10 @@ export default function CreateStore() {
         return;
       }
 
-      if (file && !["image/jpeg", "image/png", "image/jpg"].includes(file.type)) {
+      if (
+        file &&
+        !["image/jpeg", "image/png", "image/jpg"].includes(file.type)
+      ) {
         setMessage("Only JPG, JPEG, and PNG formats are allowed");
         return;
       }
@@ -64,8 +67,15 @@ export default function CreateStore() {
         return;
       }
 
-      const decodedToken = jwtDecode(token);
-      const adminId = decodedToken.id;
+      let ownerId = "";
+      try {
+        const decodedToken = jwtDecode(token);
+        ownerId = decodedToken?.ownerId || "";
+      } catch (error) {
+        setMessage("Invalid token. Please log in again.");
+        setIsSubmitting(false);
+        return;
+      }
 
       const formDataToSend = new FormData();
       for (const key in formData) {
@@ -73,14 +83,14 @@ export default function CreateStore() {
           formDataToSend.append(key, formData[key]);
         }
       }
-      formDataToSend.append("adminId", adminId);
+      formDataToSend.append("ownerId", ownerId);
 
-      await axiosInstance.post("/stores/create", formDataToSend, {
+      await axios.post("http://localhost:8000/api/stores/create", formDataToSend, {
         headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
           "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
         },
-      });
+      });  
 
       setMessage("Store created successfully!");
       setFormData({
@@ -102,10 +112,8 @@ export default function CreateStore() {
   };
 
   return (
-    <div className='w-full flex-col flex gap-4 max-w-lg py-4'>
-      <h2 className="text-3xl font-black text-center">
-        Create Store
-      </h2>
+    <div className="w-full flex-col flex gap-4 max-w-lg py-4">
+      <h2 className="text-3xl font-black text-center">Create Store</h2>
 
       <form
         onSubmit={handleSubmit}
@@ -182,55 +190,58 @@ export default function CreateStore() {
           />
         </div>
 
-          {/* Drag & Drop Area */}
-          <label
-            htmlFor="storeThumbnail"
-            className="w-full"
-          >
-            {preview ? (
-              <img
-                src={preview}
-                alt="Preview"
-                className="w-full object-cover rounded-md"
-              />
-            ) : (
-              <div className="pl-4 text-gray-600 rounded-lg cursor-pointer border-dashed border-2 py-2 border-gray-300 hover:border-gray-600">
-                Click to Upload or drag & drop
-              </div>
-            )}
-          </label>
-          <input
-            type="file"
-            name="storeThumbnail"
-            id="storeThumbnail"
-            onChange={handleChange}
-            className="hidden w-full"
-            accept="image/png, image/jpeg, image/jpg"
-          />
-
-          {preview && (
-            <button
-              type="button"
-              onClick={handleRemoveImage}
-              className="w-full bg-red-500 text-white px-4 py-2 rounded-lg"
-            >
-              Remove Image
-            </button>
+        {/* Drag & Drop Area */}
+        <label htmlFor="storeThumbnail" className="w-full">
+          {preview ? (
+            <img
+              src={preview}
+              alt="Preview"
+              className="w-full object-cover rounded-md"
+            />
+          ) : (
+            <div className="pl-4 text-gray-600 rounded-lg cursor-pointer border-dashed border-2 py-2 border-gray-300 hover:border-gray-600">
+              Click to Upload or drag & drop
+            </div>
           )}
+        </label>
+        <input
+          type="file"
+          name="storeThumbnail"
+          id="storeThumbnail"
+          onChange={handleChange}
+          className="hidden w-full"
+          accept="image/png, image/jpeg, image/jpg"
+        />
+
+        {preview && (
+          <button
+            type="button"
+            onClick={handleRemoveImage}
+            className="w-full bg-red-500 text-white px-4 py-2 rounded-lg"
+          >
+            Remove Image
+          </button>
+        )}
 
         {/* Submit Button */}
         <button
           type="submit"
           disabled={isSubmitting}
-          className={`w-full py-2 ${isSubmitting ? "bg-gray-400 cursor-not-allowed" : "bg-red-600"
-            } text-white font-semibold rounded-lg`}
+          className={`w-full py-2 ${
+            isSubmitting ? "bg-gray-400 cursor-not-allowed" : "bg-red-600"
+          } text-white font-semibold rounded-lg`}
         >
           {isSubmitting ? "Creating..." : "Create Store"}
         </button>
 
         {message && <p className="text-red-500 mt-2 text-center">{message}</p>}
       </form>
-      <Link to="/admin/dashboard" className="text-center mx-auto bg-orange-500 text-white font-bold hover:bg-orange-700 rounded py-2 px-4">Go Back</Link>
+      <Link
+        to="/admin/dashboard"
+        className="text-center mx-auto bg-orange-500 text-white font-bold hover:bg-orange-700 rounded py-2 px-4"
+      >
+        Go Back
+      </Link>
     </div>
-  )
+  );
 }

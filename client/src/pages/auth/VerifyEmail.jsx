@@ -28,7 +28,7 @@ const VerifyEmail = () => {
     setMessage("");
 
     try {
-      await axiosInstance.post("/auth/verify-email", formData);
+      await axiosInstance.post("/owners/verify-email", formData);
       navigate("/auth/login"); // Navigate without reloading
     } catch (error) {
       console.error("Error verifying email:", error);

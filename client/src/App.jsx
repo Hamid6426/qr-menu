@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
 
 // INFO
+import Layout from './layouts/Layout';
 import HomePage from './pages/info/HomePage'
 import About from './pages/info/About';
 import Contact from './pages/info/Contact';
@@ -22,7 +23,7 @@ import CreateStore from './pages/admin/CreateStore';
 import AccountSettings from './pages/admin/AccountSettings';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import Stores from './pages/admin/Stores';
-import Workers from './pages/admin/Workers';
+import Menu from './pages/admin/Menu';
 
 // MANAGER
 import ManagerLayout from './layouts/ManagerLayout';
@@ -45,19 +46,20 @@ import WaiterDashboard from './pages/waiter/WaiterDashboard';
 
 // OTHER
 import NotFound from './pages/other/NotFound';
-import Subscriptions from './pages/admin/Subscriptions';
 import StoreDetail from './pages/admin/StoreDetails';
+import WorkersList from './pages/admin/WorkersList';
 
 const App = () => {
   return (
     <Routes>
-      {/* Public Routes */}
-      <Route index element={<HomePage />} />
-      <Route path="/about" element={ <About /> } />
-      <Route path="/contact" element={ <Contact /> } />
-      <Route path="/blogs" element={ <Blogs /> } />
-      <Route path="/how-to-use" element={ <HowToUse /> } />
-      <Route path="/search-menu" element={ <SearchMenu /> } />
+      <Route path="/" element={<Layout><Outlet /></Layout>}>
+        <Route index element={<HomePage />} />
+        <Route path="/about" element={ <About /> } />
+        <Route path="/contact" element={ <Contact /> } />
+        <Route path="/blogs" element={ <Blogs /> } />
+        <Route path="/how-to-use" element={ <HowToUse /> } />
+        <Route path="/search-menu" element={ <SearchMenu /> } />
+      </Route>
 
       {/* AUTH */}
       <Route path="/auth" element={<AuthLayout><Outlet /></AuthLayout>}>
@@ -75,8 +77,8 @@ const App = () => {
         <Route path="dashboard" element={ <AdminDashboard /> } />
         <Route path="stores" element={ <Stores /> } />
         <Route path="create-store" element={ <CreateStore /> } />
-        <Route path="subscriptions" element={ <Subscriptions /> } />
-        <Route path="workers" element={ <Workers /> } />
+        <Route path="menu" element={ <Menu /> } />
+        <Route path="workers" element={ <WorkersList /> } />
         <Route path="stores/:id" element={<StoreDetail />} />
         <Route path="account-settings" element={ <AccountSettings /> } />
         <Route path="*" element={<Navigate replace to="/admin/dashboard" />} />

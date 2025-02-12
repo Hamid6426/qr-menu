@@ -1,4 +1,3 @@
-// components/owner/Section.js
 export default function Section({ title, children }) {
   return (
     <div className="bg-white shadow-md rounded-lg p-6 mb-6">

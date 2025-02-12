@@ -29,7 +29,7 @@ const Register = () => {
     setMessage("");
   
     try {
-      await axiosInstance.post("/auth/register", formData);
+      await axiosInstance.post("/owners/register", formData);
       navigate("/auth/verify-email"); // Navigate without reloading
     } catch (error) {
       console.error("Error registering user:", error);

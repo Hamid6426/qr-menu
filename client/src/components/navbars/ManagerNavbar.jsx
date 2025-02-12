@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import { MdDashboard, MdGroup, MdRestaurantMenu, MdSettings } from 'react-icons/md'; // Import MD icons
 
-export default function ManagerSidebar() {
+export default function ManagerNavbar() {
   const location = useLocation();
 
   const links = [

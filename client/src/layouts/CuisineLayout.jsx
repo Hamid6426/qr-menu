@@ -1,4 +1,4 @@
-import CuisineSidebar from "../components/cuisine/CuisineSidebar";
+import CuisineNavbar from "../components/Navbars/CuisineNavbar";
 
 const CuisineLayout = ({ children }) => {
   return (

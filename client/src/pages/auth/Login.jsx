@@ -30,7 +30,7 @@ const Login = () => {
     setIsSubmitting(true);
 
     try {
-      const response = await axiosInstance.post("/auth/login", formData);
+      const response = await axiosInstance.post("/owners/login", formData);
       // Store token in localStorage
       localStorage.setItem("token", response.data.token);
       navigate("/admin/dashboard"); // Navigate to homepage after login

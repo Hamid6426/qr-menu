@@ -2,11 +2,11 @@ import sharp from "sharp";
 import Store from "../models/Store.js";
 
 export const createStoreService = async (storeData, file) => {
-  const storeCount = await Store.countDocuments({ adminId: storeData.adminId });
+  const storeCount = await Store.countDocuments({ ownerId: storeData.ownerId });
   if (storeCount >= 3) {
-    throw new Error("Limit reached: An admin can only create up to 3 stores.");
+    throw new Error("Limit reached: An owner can only create up to 3 stores.");
   }
-
+    
   let storeThumbnail = null;
   if (file) {
     storeThumbnail = await sharp(file.buffer)
@@ -23,7 +23,7 @@ export const createStoreService = async (storeData, file) => {
     storePhone: storeData.storePhone,
     storeEmail: storeData.storeEmail,
     storeWebsite: storeData.storeWebsite,
-    adminId: storeData.adminId,
+    ownerId: storeData.ownerId,
   });
 
   await store.save();
@@ -35,16 +35,16 @@ export const getAllStoresService = async () => {
 };
 
 
-export const getStoreByIdService = async (_id) => {
-  const store = await Store.findById(_id);
+export const getStoreByIdService = async (storeId) => {
+  const store = await Store.findById(storeId);
   if (!store) {
     throw new Error("Store not found");
   }
   return store;
 };
 
-export const updateStoreService = async (_id, storeData, file) => {
-  const store = await Store.findById(_id);
+export const updateStoreService = async (storeId, storeData, file) => {
+  const store = await Store.findById(storeId);
   if (!store) {
     throw new Error("Store not found");
   }
@@ -69,10 +69,10 @@ export const updateStoreService = async (_id, storeData, file) => {
   return store;
 };
 
-export const deleteStoreService = async (_id) => {
-  console.log("Deleting store with ID:", _id); // Debugging log
+export const deleteStoreService = async (storeId) => {
+  console.log("Deleting store with ID:", storeId); // Debugging log
 
-  const store = await Store.findByIdAndDelete(_id);
+  const store = await Store.findByIdAndDelete(storeId);
   if (!store) {
     console.log("Store not found in database.");
     throw new Error("Store not found or already deleted");

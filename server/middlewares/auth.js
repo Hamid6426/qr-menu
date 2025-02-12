@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const User = require("../models/User");
+const User = require("../models/Owner");
 require("dotenv").config();
 const SALT_ROUNDS = +process.env.SALT_ROUNDS;
 const PRIVATE_KEY = process.env.PRIVATE_KEY;

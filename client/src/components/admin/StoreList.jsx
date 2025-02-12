@@ -1,22 +1,23 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import DeleteStoreButton from "./DeleteStoreButton";
+import useFetchStores from "../../utils/useFetchStores";
 
-export default function StoreList({ stores, setStores, loading }) {
-  const handleDeleteSuccess = (storeId) => {
-    setStores((prevStores) =>
-      prevStores.filter((store) => store._id !== storeId)
-    );
-  };
+export default function StoreList() {
+  const { stores, setStores, storeLoading } = useFetchStores(); // ✅ Make sure setStores is available
 
-  if (loading) return <p>Loading stores...</p>;
+  if (storeLoading) return <p>Loading stores...</p>;
   if (stores.length === 0) return <p>No stores found.</p>;
+
+  // ✅ Function to remove deleted store from state
+  const handleDeleteSuccess = (deletedStoreId) => {
+    setStores((prevStores) => prevStores.filter(store => store._id !== deletedStoreId));
+  };
 
   return (
     <div className="w-full max-w-2xl p-4 flex flex-col justify-center items-center gap-6">
       {stores.map((store) => {
-        const imageSrc = store.storeThumbnail
-          ? store.storeThumbnail
-          : "/default-image.jpg";
+        const imageSrc = store.storeThumbnail || "/default-image.jpg";
 
         return (
           <div
@@ -44,7 +45,7 @@ export default function StoreList({ stores, setStores, loading }) {
               <div className="w-full flex gap-4 justify-between">
                 <DeleteStoreButton
                   storeId={store._id}
-                  onDelete={handleDeleteSuccess}
+                  onDelete={handleDeleteSuccess} // ✅ Correctly pass delete function
                 />
                 <Link
                   className="w-full text-center text-sm bg-purple-500 text-white font-bold hover:bg-purple-700 rounded py-1 px-3"

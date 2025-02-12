@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function CuisineSidebar() {
+export default function CuisineNavbar() {
   return (
     <div>
       

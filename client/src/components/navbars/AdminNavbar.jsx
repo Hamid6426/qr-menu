@@ -1,15 +1,15 @@
 import { Link, useLocation } from 'react-router-dom';
-import { MdDashboard, MdPeople, MdSettings, MdStore, MdSubscriptions } from 'react-icons/md'; // Import MD icons
+import { MdDashboard, MdMenuBook, MdPeople, MdSettings, MdStore } from 'react-icons/md'; // Import MD icons
 import Logout from '../LogOut';
 
-export default function AdminSidebar() {
+export default function AdminNavbar() {
   const location = useLocation();
 
   const links = [
     { to: "/admin/dashboard", label: "Dashboard", icon: <MdDashboard size={24} /> },
     { to: "/admin/stores", label: "Stores", icon: <MdStore size={24} /> },
-    { to: "/admin/subscriptions", label: "Subscriptions", icon: <MdSubscriptions size={24} /> },
     { to: "/admin/workers", label: "Workers", icon: <MdPeople size={24} /> },
+    { to: "/admin/menu", label: "Menu", icon: <MdMenuBook size={24} /> },
     { to: "/admin/account-settings", label: "Account Settings", icon: <MdSettings size={24} /> },
   ];
 

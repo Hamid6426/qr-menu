@@ -1,11 +1,8 @@
-import LandingNavbar from "../../components/LandingNavbar";
 import { Link } from "react-router-dom";
 
 export default function HomePage() {
   return (
     <div className="w-full min-h-screen">
-      <LandingNavbar />
-
       {/* Hero Section */}
       <header className="flex flex-col justify-center items-center h-[740px] bg-gradient-to-b from-red-600 from-40% via-red-500 via-70% to-red-400 to-100% text-white py-20 text-center">
         <h1 className="text-4xl md:text-6xl font-extrabold mb-4">

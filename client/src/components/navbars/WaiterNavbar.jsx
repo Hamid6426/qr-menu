@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { MdDashboard, MdMenu, MdSettings } from 'react-icons/md'; // Import MD icons
 
-export default function WaiterSidebar() {
+export default function WaiterNavbar() {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false); // State for sidebar width
 

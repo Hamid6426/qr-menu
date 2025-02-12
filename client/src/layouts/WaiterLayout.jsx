@@ -1,4 +1,4 @@
-import WaiterSidebar from "../components/waiter/WaiterSidebar";
+import WaiterNavbar from "../components/Navbars/WaiterNavbar";
 
 const WaiterLayout = ({ children }) => {
   return (

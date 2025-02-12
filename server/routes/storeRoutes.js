@@ -5,16 +5,20 @@ import {
   getStoreByIdController,
   updateStoreController,
   deleteStoreController,
-  getStoreImage
+  getStoreImageController
 } from '../controllers/storeController.js'; 
 import upload from "../middlewares/multer.js";
 import { convertToObjectId } from "../middlewares/convertToObjectId.js";
+import { authMiddleware } from "../middlewares/authMiddleware.js"; // Import the auth middleware
 
 export const storeRouter = express.Router();
 
-storeRouter.post("/create", upload.single("storeThumbnail"), createStoreController);
-storeRouter.get('/', getAllStoresController);
-storeRouter.get('/:_id', convertToObjectId, getStoreByIdController);
-storeRouter.put("/:_id", convertToObjectId, upload.single("storeThumbnail"), updateStoreController);
-storeRouter.delete('/:_id', convertToObjectId, deleteStoreController);
-storeRouter.get("/:_id/image", convertToObjectId, getStoreImage);
+// Protect these routes using authMiddleware
+storeRouter.post("/create", authMiddleware, upload.single("storeThumbnail"), createStoreController);
+storeRouter.put("/:_id", authMiddleware, convertToObjectId, upload.single("storeThumbnail"), updateStoreController);
+storeRouter.delete("/:_id", authMiddleware, convertToObjectId, deleteStoreController);
+
+// Public routes (if needed)
+storeRouter.get('/', authMiddleware, getAllStoresController);
+storeRouter.get('/:_id', authMiddleware, convertToObjectId, getStoreByIdController);
+storeRouter.get("/:_id/image", authMiddleware, convertToObjectId, getStoreImageController);

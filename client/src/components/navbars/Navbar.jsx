@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom'; // Use Link instead of <a>
 
-export default function LandingNavbar() {
+export default function Navbar() {
   const location = useLocation();
 
   const links = [

@@ -49,7 +49,7 @@ export const getStoreByIdController = async (req, res) => {
 };
 
 // Get store image
-export const getStoreImage = async (req, res) => {
+export const getStoreImageController = async (req, res) => {
   try {
     const store = await Store.findById(req.params._id);
     if (!store) {

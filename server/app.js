@@ -2,8 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import db from "./config/db.js";
-import { authRouter } from "./routes/authRoutes.js";
-import { userRouter } from "./routes/userRoutes.js";
+import { ownerRouter } from "./routes/ownerRoutes.js";
 import { storeRouter } from "./routes/storeRoutes.js";
 import { workerRouter } from "./routes/workerRoutes.js";
 import { menuRouter } from "./routes/menuRoutes.js";
@@ -34,11 +33,10 @@ app.get("/api", (_req, res) => {
 });
 
 // Routes
-app.use("/api/auth", authRouter); // Auth routes
-app.use("/api/users", userRouter); // User routes
-app.use("/api/stores", storeRouter); // User routes
-app.use("/api/workers", workerRouter); // User routes
-app.use("/api/menu", menuRouter); // User routes
-app.use("/api/orders", orderRouter); // User routes
+app.use("/api/owners", ownerRouter); // Owner routes
+app.use("/api/stores", storeRouter); // Store routes
+app.use("/api/workers", workerRouter); // Worker routes
+app.use("/api/menu", menuRouter); // Menu routes
+app.use("/api/orders", orderRouter); // Order routes
 
 export default app;

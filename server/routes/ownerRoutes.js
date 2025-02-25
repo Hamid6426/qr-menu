@@ -1,6 +1,5 @@
 import express from "express";
 import { authMiddleware } from "../middlewares/authMiddleware.js";
-import { convertToObjectId } from "../middlewares/convertToObjectId.js";
 import { registerOwner } from "../controllers/ownerControllers/registerOwner.js";
 import { verifyEmail } from "../controllers/ownerControllers/verifyEmail.js";
 import { resendCode } from "../controllers/ownerControllers/resendCode.js";
@@ -12,6 +11,7 @@ import { resetPassword } from "../controllers/ownerControllers/resetPassword.js"
 import { getOwnerById } from "../controllers/ownerControllers/getOwnerById.js";
 import { updateOwner } from "../controllers/ownerControllers/updateOwner.js";
 import { changePassword } from "../controllers/ownerControllers/changePassword.js";
+import { deleteOwner } from "../controllers/ownerControllers/deleteOwner.js";
 
 export const ownerRouter = express.Router();
 
@@ -27,11 +27,4 @@ ownerRouter.post("/reset-password", resetPassword);
 ownerRouter.get("/get-owner", authMiddleware, getOwnerById);
 ownerRouter.put("/update-owner", authMiddleware, updateOwner);
 ownerRouter.put("/change-password", authMiddleware, changePassword);
-
-// // Other Routes
-// ownerRouter.get("/", getAllOwnersController);
-// ownerRouter.get("/profile", profileController);
-// ownerRouter.get("/:_id", convertToObjectId, getOwnerByIdController);
-// ownerRouter.put("/:_id", convertToObjectId, updateOwnerController);
-// ownerRouter.patch("/:_id", convertToObjectId, patchOwnerController);
-// ownerRouter.delete("/:_id", convertToObjectId, deleteOwnerController);
+ownerRouter.put("/change-password", authMiddleware, deleteOwner);

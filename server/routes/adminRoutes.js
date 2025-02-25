@@ -1,13 +1,19 @@
 import express from "express";
 import { registerAdmin } from "../controllers/adminControllers/registerAdmin.js";
 import { verifyAdmin } from "../controllers/adminControllers/verifyAdmin.js";
-import { loginAdmin } from "../controllers/ownerControllers/loginOwner.js";
-import { logoutAdMin } from "../controllers/ownerControllers/logoutOwner.js";
+import { loginAdmin } from "../controllers/adminControllers/loginAdmin.js";
+import { logoutAdmin } from "../controllers/adminControllers/logoutAdmin.js";
+import { authAdminMiddleware } from "../middlewares/authMiddleware.js";
+import { getAllOwners } from "../controllers/adminControllers/getAllOwners.js";
+import { updateOwnerStatus } from "../controllers/adminControllers/updateOwnerStatus.js";
 
-export const ownerRouter = express.Router();
+export const adminRouter = express.Router();
 
 // Owner Auth Routes
-ownerRouter.post("/register", registerOwner);
-ownerRouter.post("/verify-email", verifyEmail);
-ownerRouter.post("/login", loginOwner);
-ownerRouter.post("/logout", logoutOwner);
+adminRouter.post("/register", registerAdmin);
+adminRouter.post("/verify", verifyAdmin);
+adminRouter.post("/login", loginAdmin);
+adminRouter.post("/logout", logoutAdmin);
+
+adminRouter.get("/owners", authAdminMiddleware, getAllOwners);
+adminRouter.put("/owners/:ownerId/status", authAdminMiddleware, updateOwnerStatus);

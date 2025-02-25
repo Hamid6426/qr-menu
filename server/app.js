@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
 import db from "./config/db.js";
 import { ownerRouter } from "./routes/ownerRoutes.js";
 import { storeRouter } from "./routes/storeRoutes.js";
@@ -17,6 +18,7 @@ db();
 
 // Middleware
 app.use(express.json());
+app.use(cookieParser());
 app.use(
   cors({
     origin: true, // Allows all origins

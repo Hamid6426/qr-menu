@@ -3,25 +3,23 @@ import Owner from "../models/Owner.js";
 
 export const authMiddleware = async (req, res, next) => {
   try {
-    const authHeader = req.header("Authorization");
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return res.status(401).send({ error: "No token provided. Please authenticate." });
+    const token = req.cookies.token; // Get token from cookies
+
+    if (!token) {
+      return res.status(401).json({ message: "Unauthorized: No token provided" });
     }
 
-    const token = authHeader.replace("Bearer ", "");
+    // Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    
-    const owner = await Owner.findOne({
-      _id: decoded.id // Ensure this matches the `id` field in the JWT payload
-    });
+    req.owner = await Owner.findById(decoded.id).select("-password");
 
-    if (!owner) {
-      return res.status(401).send({ error: "Invalid token. Please authenticate." });
+    if (!req.owner) {
+      return res.status(401).json({ message: "Unauthorized: Owner not found" });
     }
 
-    req.owner = owner; // Attach the owner to the request object
-    next();
+    next(); // Proceed to the next middleware/controller
   } catch (error) {
-    res.status(401).send({ error: "Authentication failed. Invalid or expired token." });
+    console.error("Auth error:", error);
+    res.status(401).json({ message: "Invalid or expired token" });
   }
 };

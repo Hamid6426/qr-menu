@@ -3,7 +3,7 @@ import Owner from "../../models/Owner.js";
 export const updateOwner = async (req, res) => {
   try {
     const { fullName, email } = req.body;
-    const ownerId = req.owner._id; // ✅ Getting owner from authMiddleware
+    const ownerId = req.owner.id; // ✅ Getting owner from authMiddleware
 
     // Find and update owner
     const updatedOwner = await Owner.findByIdAndUpdate(

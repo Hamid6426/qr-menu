@@ -1,19 +1,19 @@
 import Owner from "../../models/Owner.js";
 
-export const deleteOwnerController = async (req, res) => {
-    try {
-        const owner = await deleteOwnerService(req.params._id);
-        try {
-            const deletedOwner = await Owner.findByIdAndDelete(ownerId);
-            if (!deletedOwner) {
-                throw new Error("Owner not found");
-            }
-            return deletedOwner;
-        } catch (error) {
-            throw new Error("Error deleting owner: " + error.message);
-        }
-        res.status(200).json(owner);
-    } catch (error) {
-        res.status(400).json({ error: error.message });
-    }
+export const deleteOwner = async (req, res) => {
+  try {
+    const ownerId = req.owner.id; // Extract owner ID from token
+
+    // Find and delete the owner
+    const owner = await Owner.findByIdAndDelete(ownerId);
+    if (!owner) return res.status(404).json({ message: "Owner not found" });
+
+    // Clear the authentication cookie
+    res.clearCookie("token");
+
+    res.json({ message: "Account deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting account:", error);
+    res.status(500).json({ message: "Server error" });
+  }
 };

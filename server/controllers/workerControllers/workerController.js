@@ -3,7 +3,7 @@ import {
   getAllWorkersService, 
   getWorkersByStoreService, 
   getWorkerByIdService 
-} from "../services/workerService.js";
+} from "../../services/workerService.js";
 
 // Create a new worker (Only Admins can do this)
 export const createWorker = async (req, res) => {

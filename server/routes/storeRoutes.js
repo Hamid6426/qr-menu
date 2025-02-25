@@ -6,7 +6,7 @@ import {
   updateStoreController,
   deleteStoreController,
   getStoreImageController
-} from '../controllers/storeController.js'; 
+} from '../controllers/storeControllers/storeController.js'; 
 import upload from "../middlewares/multer.js";
 import { convertToObjectId } from "../middlewares/convertToObjectId.js";
 import { authMiddleware } from "../middlewares/authMiddleware.js"; // Import the auth middleware

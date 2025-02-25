@@ -4,7 +4,7 @@ import {
   getMenuItemByIdService,
   updateMenuItemService,
   deleteMenuItemService,
-} from "../services/menuService.js";
+} from "../../services/menuService.js";
 
 // Create a new menu item
 export const createMenuItemController = async (req, res) => {

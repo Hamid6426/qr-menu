@@ -4,7 +4,7 @@ import {
   getStoreByIdService,
   updateStoreService,
   deleteStoreService,
-} from "../services/storeService.js";
+} from "../../services/storeService.js";
 
 // Create a new store
 export const createStoreController = async (req, res) => {

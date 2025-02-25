@@ -6,7 +6,7 @@ import {
   getMenuItemImageController,
   updateMenuItemController,
   deleteMenuItemController,
-} from "../controllers/menuController.js";
+} from "../controllers/menuControllers/menuController.js";
 import { convertToObjectId } from "../middlewares/convertToObjectId.js";
 import multer from "multer";
 

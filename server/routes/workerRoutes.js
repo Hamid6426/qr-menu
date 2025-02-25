@@ -1,5 +1,5 @@
 import express from "express";
-import { createWorker, getAllWorkers, getWorkersByStore, getWorkerById } from "../controllers/workerController.js";
+import { createWorker, getAllWorkers, getWorkersByStore, getWorkerById } from "../controllers/workerControllers/workerController.js";
 import { authMiddleware } from "../middlewares/authMiddleware.js";
 
 export const workerRouter = express.Router();

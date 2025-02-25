@@ -34,9 +34,5 @@ app.get("/api", (_req, res) => {
 
 // Routes
 app.use("/api/owners", ownerRouter); // Owner routes
-app.use("/api/stores", storeRouter); // Store routes
-app.use("/api/workers", workerRouter); // Worker routes
-app.use("/api/menu", menuRouter); // Menu routes
-app.use("/api/orders", orderRouter); // Order routes
 
 export default app;

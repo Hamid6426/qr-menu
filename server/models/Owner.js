@@ -15,10 +15,6 @@ const ownerSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Ensure unique indexes
-ownerSchema.index({ ownerId: 1 }, { unique: true });
-ownerSchema.index({ email: 1 }, { unique: true });
-
 // Hash password before saving
 ownerSchema.pre("save", async function (next) {
   if (this.isModified("password")) {

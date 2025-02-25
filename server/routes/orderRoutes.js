@@ -5,7 +5,7 @@ import {
   getOrderByIdController,
   updateOrderStatusController,
   deleteOrderController,
-} from "../controllers/orderController.js";
+} from "../controllers/orderControllers/orderController.js";
 import { convertToObjectId } from "../middlewares/convertToObjectId.js";
 
 export const orderRouter = express.Router();

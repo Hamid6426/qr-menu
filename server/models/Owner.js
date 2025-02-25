@@ -15,19 +15,5 @@ const ownerSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Hash password before saving
-ownerSchema.pre("save", async function (next) {
-  if (this.isModified("password")) {
-    this.password = await bcrypt.hash(this.password, 10);
-  }
-
-  // Hash verification code if modified
-  if (this.isModified("verificationCode") && this.verificationCode) {
-    this.verificationCode = await bcrypt.hash(this.verificationCode, 10);
-  }
-
-  next();
-});
-
 const Owner = mongoose.model("Owner", ownerSchema);
 export default Owner;

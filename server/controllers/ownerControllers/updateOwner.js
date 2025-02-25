@@ -1,21 +1,27 @@
 import Owner from "../../models/Owner.js";
 
-export const updateOwnerController = async (req, res) => {
+export const updateOwner = async (req, res) => {
   try {
-    const owner = await updateOwnerService(req.params._id, req.body);
-    try {
-      const updatedOwner = await Owner.findByIdAndUpdate(ownerId, ownerData, {
-        new: true,
-      });
-      if (!updatedOwner) {
-        throw new Error("Owner not found");
-      }
-      return updatedOwner;
-    } catch (error) {
-      throw new Error("Error updating owner: " + error.message);
+    const ownerId = req.owner.id;
+    const { fullName, email } = req.body;
+
+    // Check if email is already in use by another owner
+    if (email) {
+      const emailExists = await Owner.findOne({ email, _id: { $ne: ownerId } });
+      if (emailExists) return res.status(400).json({ message: "Email already in use" });
     }
-    res.status(200).json(owner);
+
+    const updatedOwner = await Owner.findByIdAndUpdate(
+      ownerId,
+      { fullName, email },
+      { new: true, runValidators: true }
+    ).select("-password -verificationCode");
+
+    if (!updatedOwner) return res.status(404).json({ message: "Owner not found" });
+
+    res.json({ message: "Profile updated successfully", owner: updatedOwner });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    console.error("Error updating profile:", error);
+    res.status(500).json({ message: "Server error" });
   }
 };

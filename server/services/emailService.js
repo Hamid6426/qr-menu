@@ -13,6 +13,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+// Send Email Verification Code
 export const sendVerificationEmail = async (email, verificationCode) => {
   const mailOptions = {
     from: process.env.EMAIL_USER,
@@ -26,5 +27,22 @@ export const sendVerificationEmail = async (email, verificationCode) => {
     return { message: "Verification code sent" };
   } catch (error) {
     throw new Error("Error sending verification code: " + error.message);
+  }
+};
+
+// Send Password Reset Email
+export const sendResetPasswordEmail = async (email, resetToken) => {
+  const mailOptions = {
+    from: process.env.EMAIL_USER,
+    to: email,
+    subject: "Password Reset Request",
+    text: `You requested to reset your password. Use this token: ${resetToken}.\nThis token expires in 10 minutes.`,
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    return { message: "Password reset email sent" };
+  } catch (error) {
+    throw new Error("Error sending password reset email: " + error.message);
   }
 };

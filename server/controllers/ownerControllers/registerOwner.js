@@ -1,3 +1,4 @@
+import bcrypt from "bcrypt";
 import Owner from "../../models/Owner.js";
 import { sendVerificationEmail } from "../../services/emailService.js";
 
@@ -10,12 +11,13 @@ export const registerOwner = async (req, res) => {
       return res.status(400).json({ message: "Email already in use" });
     }
 
+    const hashedPassword = await bcrypt.hash(password, 10);
     const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
     const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
 
     const newOwner = new Owner({
       email,
-      password,
+      password: hashedPassword,
       fullName,
       verificationCode,
       verificationExpires: expiresAt,

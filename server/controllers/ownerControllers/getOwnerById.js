@@ -1,19 +1,16 @@
 import Owner from "../../models/Owner.js";
 
-export const getOwnerByIdController = async (req, res) => {
+export const getOwnerById = async (req, res) => {
     try {
-      const owner = await getOwnerByIdService(req.params._id);
-      try {
-        const owner = await Owner.findById(ownerId);
-        if (!owner) {
-          throw new Error("Owner not found");
-        }
-        return owner;
-      } catch (error) {
-        throw new Error("Error fetching owner: " + error.message);
-      }
-      res.status(200).json(owner);
+      const ownerId = req.owner.id; // Assuming `req.owner` is set in authentication middleware
+      const owner = await Owner.findById(ownerId).select("-password -verificationCode");
+  
+      if (!owner) return res.status(404).json({ message: "Owner not found" });
+  
+      res.json(owner);
     } catch (error) {
-      res.status(400).json({ error: error.message });
+      console.error("Error fetching profile:", error);
+      res.status(500).json({ message: "Server error" });
     }
   };
+  

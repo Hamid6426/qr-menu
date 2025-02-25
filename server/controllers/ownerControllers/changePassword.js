@@ -1,28 +1,26 @@
-import bcrypt from "bcrypt";
 import Owner from "../../models/Owner.js";
+import bcrypt from "bcrypt";
 
-export const changePasswordController = async (req, res) => {
+export const changePassword = async (req, res) => {
     try {
-        const owner = await changeOwnerPasswordService(
-            req.params._id,
-            req.body.newPassword
-        );
-        try {
-            const hashedPassword = await bcrypt.hash(newPassword, 10);
-            const updatedOwner = await Owner.findByIdAndUpdate(
-                ownerId,
-                { password: hashedPassword },
-                { new: true }
-            );
-            if (!updatedOwner) {
-                throw new Error("Owner not found");
-            }
-            return updatedOwner;
-        } catch (error) {
-            throw new Error("Error changing password: " + error.message);
-        }
-        res.status(200).json(owner);
+      const ownerId = req.owner.id;
+      const { currentPassword, newPassword } = req.body;
+  
+      const owner = await Owner.findById(ownerId);
+      if (!owner) return res.status(404).json({ message: "Owner not found" });
+  
+      // Check if current password is correct
+      const isMatch = await bcrypt.compare(currentPassword, owner.password);
+      if (!isMatch) return res.status(400).json({ message: "Current password is incorrect" });
+  
+      // Hash new password and update
+      owner.password = await bcrypt.hash(newPassword, 10);
+      await owner.save();
+  
+      res.json({ message: "Password changed successfully" });
     } catch (error) {
-        res.status(400).json({ error: error.message });
+      console.error("Error changing password:", error);
+      res.status(500).json({ message: "Server error" });
     }
-};
+  };
+  

@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+// the developer or creator of the app
 const adminSchema = new mongoose.Schema(
   {
     email: { type: String, required: true, unique: true },

@@ -1,17 +1,17 @@
 import express from "express";
-import {
-  createOrderController,
-  getAllOrdersController,
-  getOrderByIdController,
-  updateOrderStatusController,
-  deleteOrderController,
-} from "../controllers/orderControllers/orderController.js";
-import { convertToObjectId } from "../middlewares/convertToObjectId.js";
+import placeOrder from "../controllers/orderControllers/placeOrder.js";
+import viewOrderStatus from "../controllers/orderControllers/viewOrderStatus.js";
+import updateOrderStatus from "../controllers/orderControllers/updateOrderStatus.js";
+import cancelOrder from "../controllers/orderControllers/cancelOrder.js";
+import markOrderDelivered from "../controllers/orderControllers/markOrderDelivered.js";
+import markOrderComplete from "../controllers/orderControllers/markOrderComplete.js";
 
 export const orderRouter = express.Router();
 
-orderRouter.post("/", createOrderController); // Place a new order
-orderRouter.get("/store/:storeId", convertToObjectId, getAllOrdersController); // Get all orders for a store
-orderRouter.get("/:_id", convertToObjectId, getOrderByIdController); // Get order by ID
-orderRouter.put("/:_id/status", convertToObjectId, updateOrderStatusController); // Update order status
-orderRouter.delete("/:_id", convertToObjectId, deleteOrderController); // Delete order
+// Order Routes
+orderRouter.post("/place", placeOrder); // Customer places an order via waiter
+orderRouter.get("/status/:orderId", viewOrderStatus); // View order status
+orderRouter.patch("/update-status/:orderId", updateOrderStatus); // Update order status (Waiter/Cook)
+orderRouter.patch("/cancel/:orderId", cancelOrder); // Cancel order (Waiter before preparation)
+orderRouter.patch("/mark-delivered/:orderId", markOrderDelivered); // Mark order as delivered (Waiter)
+orderRouter.patch("/mark-complete/:orderId", markOrderComplete); // Mark order as complete (System or Admin)

@@ -16,10 +16,12 @@ const orderSchema = new mongoose.Schema(
       ],
       required: true,
     },
-    items: [{ type: String, ref: "Menu" }],
+    // items: [{ type: String, ref: "Menu" }],
+    items: [{ type: mongoose.Schema.Types.ObjectId, ref: "Menu" }], // Reference to Menu
     tableNo: { type: Number, required: true },
-    ownerId: { type: String, required: true, ref: 'Owner' },
-    storeId: { type: String, required: true, ref: 'Store' },
+    ownerId: { type: String, required: true, ref: "Owner" },
+    storeId: { type: String, required: true, ref: "Store" },
+    workerId: { type: String, required: true, ref: "Worker" },
   },
   { timestamps: true }
 );

@@ -6,10 +6,11 @@ const menuSchema = new mongoose.Schema(
     menuId: { type: String, required: true, unique: true, default: uuidv4 },
     itemName: { type: String, required: true },
     itemDescription: { type: String, required: true },
-    itemCategory: { type: String, required: true }, // like pizzas, juices, or coffee, etc.
+    itemCategory: { type: String, required: true },
     itemPrice: { type: Number, required: true },
     itemPicture: { type: Buffer, required: true },
-    storeId: { type: String, required: true, ref: 'Store' }, // Reference to Store
+    storeId: { type: String, required: true, ref: "Store" },
+    stockStatus: { type: String, enum: ["In Stock", "Out of Stock"], default: "In Stock" },
   },
   { timestamps: true }
 );

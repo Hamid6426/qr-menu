@@ -1,0 +1,19 @@
+Controllers for Order Management
+CustomerController (Frontend Interaction)
+
+placeOrder(req, res): Customer tells the waiter what to bring, initiating an order.
+viewOrderStatus(req, res): Customers can check the status of their order.
+WaiterController (Handles Customer Requests)
+
+createOrder(req, res): Waiter places an order on behalf of the customer.
+updateOrderStatus(req, res): Can move the order status to "Order Confirmed" or "Ready for Pickup".
+viewAssignedOrders(req, res): Shows the waiter their current orders.
+CookController (Handles Food Preparation)
+
+viewPendingOrders(req, res): Cook sees orders that are in "Order Confirmed" status.
+startCooking(req, res): Changes status to "Cooking in Progress".
+markReadyForPickup(req, res): Changes status to "Ready for Pickup".
+OwnerController (Admin Controls)
+
+viewAllOrders(req, res): View all orders across the store.
+assignWorkers(req, res): Assign orders to specific workers.

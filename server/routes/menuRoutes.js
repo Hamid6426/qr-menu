@@ -1,22 +1,17 @@
 import express from "express";
-import {
-  createMenuItemController,
-  getAllMenuItemsController,
-  getMenuItemByIdController,
-  getMenuItemImageController,
-  updateMenuItemController,
-  deleteMenuItemController,
-} from "../controllers/menuControllers/menuController.js";
-import { convertToObjectId } from "../middlewares/convertToObjectId.js";
 import multer from "multer";
-
-const upload = multer(); // Using memory storage for image processing
+import addMenuItem from "../controllers/menuControllers/addMenuItem.js";
+import getMenuItems from "../controllers/menuControllers/getMenuItems.js";
+import updateMenuItem from "../controllers/menuControllers/updateMenuItem.js";
+import deleteMenuItem from "../controllers/menuControllers/deleteMenuItem.js";
+import updateStockStatus from "../controllers/menuControllers/updateStockStatus.js";
 
 export const menuRouter = express.Router();
+const upload = multer();  
 
-menuRouter.post("/", upload.single("picture"), createMenuItemController); // Create menu item
-menuRouter.get("/store/:storeId", convertToObjectId, getAllMenuItemsController); // Get all menu items for a store
-menuRouter.get("/:_id", convertToObjectId, getMenuItemByIdController); // Get menu item by ID
-menuRouter.get("/:_id/image", convertToObjectId, getMenuItemImageController); // Get menu item image
-menuRouter.put("/:_id", convertToObjectId, upload.single("picture"), updateMenuItemController); // Update menu item
-menuRouter.delete("/:_id", convertToObjectId, deleteMenuItemController); // Delete menu item
+// Menu Item Routes
+menuRouter.post("/add", upload.single("itemPicture"), addMenuItem); // Add menu item with image
+menuRouter.get("/:storeId", getMenuItems); // Get all menu items for a store
+menuRouter.patch("/update/:menuId", upload.single("itemPicture"), updateMenuItem); // Update menu item details and image
+menuRouter.delete("/delete/:menuId", deleteMenuItem); // Delete menu item
+menuRouter.patch("/update-stock/:menuId", updateStockStatus); // Update stock status (In Stock / Out of Stock)

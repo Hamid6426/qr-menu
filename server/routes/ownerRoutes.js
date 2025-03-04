@@ -27,4 +27,4 @@ ownerRouter.post("/reset-password", resetPassword);
 ownerRouter.get("/get-owner", authMiddleware, getOwnerById);
 ownerRouter.put("/update-owner", authMiddleware, updateOwner);
 ownerRouter.put("/change-password", authMiddleware, changePassword);
-ownerRouter.put("/change-password", authMiddleware, deleteOwner);
+ownerRouter.put("/delete-owner", authMiddleware, deleteOwner);

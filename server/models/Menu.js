@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 
 const menuSchema = new mongoose.Schema(
   {
-    menuId: { type: String, required: true, unique: true, default: uuidv4 },
+    itemId: { type: String, required: true, unique: true, default: uuidv4 },
     itemName: { type: String, required: true },
     itemDescription: { type: String, required: true },
     itemCategory: { type: String, required: true },

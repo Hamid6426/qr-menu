@@ -16,8 +16,14 @@ const orderSchema = new mongoose.Schema(
       ],
       required: true,
     },
-    // items: [{ type: String, ref: "Menu" }],
-    items: [{ type: mongoose.Schema.Types.ObjectId, ref: "Menu" }], // Reference to Menu
+    items: [
+      {
+        itemId: { type: String, ref: "Menu" },
+        quantity: { type: Number, required: true },
+        specialInstructions: { type: String },
+        priceAtOrderTime: { type: Number, required: true }, // Store the price when the order was made
+      }
+    ], 
     tableNo: { type: Number, required: true },
     ownerId: { type: String, required: true, ref: "Owner" },
     storeId: { type: String, required: true, ref: "Store" },
